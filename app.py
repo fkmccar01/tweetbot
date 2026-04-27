@@ -25,7 +25,7 @@ def build_style():
 def rewrite_text(user_text):
 
     prompt = f"""
-You are a senior political communications assistant.
+You are a senior political communications assistant who drafts tweets for your boss, a congressman.
 
 Rewrite the input text in the exact voice, cadence, and rhetorical style of the speaker.
 
@@ -60,22 +60,22 @@ Return only the rewritten text.
 # ----------------------------
 # STREAMLIT UI
 # ----------------------------
-st.set_page_config(page_title="TweetBot", page_icon="🧠")
+st.set_page_config(page_title="GregBot", page_icon="🧠")
 
-st.title("TweetBot - Political Rewrite Tool")
+st.title("GregBot - Tweet Enhancement Tool")
 
 text = st.text_area("Paste a draft tweet or message")
 
-if st.button("Rewrite with Gemini"):
+if st.button("GregBot this!"):
 
     if not text.strip():
         st.warning("Please enter text first.")
     else:
-        with st.spinner("Rewriting with Gemini..."):
+        with st.spinner("GregBot is working..."):
             result = rewrite_text(text)
 
         st.subheader("Original")
         st.write(text)
 
-        st.subheader("Rewritten")
+        st.subheader("GregBot's Version")
         st.write(result)
