@@ -1,36 +1,48 @@
 import streamlit as st
-from tweets import TWEETS
 from google import genai
+from tweets import TWEETS  # <-- your external style database
 
-# Load key safely from Streamlit secrets
+# ----------------------------
+# GEMINI CLIENT
+# ----------------------------
 client = genai.Client(api_key=st.secrets["GEMINI_API_KEY"])
 
-st.title("TweetBot - Political Rewrite Tool")
-
-text = st.text_area("Paste a draft tweet here")
-
+# ----------------------------
+# STYLE BUILDER
+# ----------------------------
 def build_style():
     return "\n".join([f"- {t}" for t in TWEETS])
 
-def rewrite(user_text):
-    prompt = f"""
-You are a political communications assistant.
+# ----------------------------
+# PROMPT ENGINE
+# ----------------------------
+def rewrite_text(user_text):
 
-Rewrite the input in a clear political voice.
+    prompt = f"""
+You are a senior political communications assistant who has to write tweets in the voice and style of your boss, a congressman.
+
+Rewrite the input text in the exact voice, cadence, and rhetorical style of the speaker.
 
 STYLE EXAMPLES:
 {build_style()}
 
 RULES:
-- Do NOT change meaning
-- Do NOT add new facts
-- Make it sound like polished political messaging
-- Short, confident sentences
+- Preserve meaning exactly
+- Do NOT add new facts or claims
+- Match tone, cadence, and sentence structure
+- Use short, confident sentences
+- Avoid generic political phrases (e.g. "moving forward", "together we can")
+- Do NOT sound like an AI assistant
+
+STRUCTURE:
+- short claim → justification → implication or call to action
+- sometimes contrast framing (what is vs what should be)
 
 INPUT:
 {user_text}
 
 OUTPUT:
+Return only the rewritten text.
 """
 
     response = client.models.generate_content(
@@ -40,12 +52,23 @@ OUTPUT:
 
     return response.text
 
+# ----------------------------
+# STREAMLIT UI
+# ----------------------------
+st.title("TweetBot - Political Rewrite Tool")
+
+text = st.text_area("Paste a draft tweet or message")
+
 if st.button("Rewrite with Gemini"):
-    if not text:
-        st.warning("Enter text first")
+
+    if not text.strip():
+        st.warning("Please enter text first.")
     else:
+        with st.spinner("Rewriting..."):
+            result = rewrite_text(text)
+
         st.subheader("Original")
         st.write(text)
 
         st.subheader("Rewritten")
-        st.write(rewrite(text))
+        st.write(result)
