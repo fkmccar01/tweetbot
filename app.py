@@ -3,12 +3,12 @@ from google import genai
 from tweets import TWEETS
 
 # ----------------------------
-# SAFE API KEY LOADING
+# LOAD API KEY SAFELY
 # ----------------------------
 API_KEY = st.secrets.get("GEMINI_API_KEY")
 
 if not API_KEY:
-    st.error("Missing GEMINI_API_KEY in Streamlit secrets")
+    st.error("Missing GEMINI_API_KEY in Streamlit Secrets")
     st.stop()
 
 client = genai.Client(api_key=API_KEY)
@@ -36,9 +36,9 @@ RULES:
 - Preserve meaning exactly
 - Do NOT add new facts or claims
 - Use short, confident political sentences
-- Avoid generic phrases (e.g. "moving forward", "together we can")
+- Avoid generic phrases like "moving forward", "together we can"
 - Do NOT sound like an AI assistant
-- Make it sound like a real political message
+- Make it sound like real political messaging
 
 INPUT:
 {user_text}
@@ -49,7 +49,7 @@ Return only the rewritten text.
 
     try:
         response = client.models.generate_content(
-            model="gemini-1.5-pro",
+            model="gemini-1.5-flash-001",  # ✅ stable SDK-supported model
             contents=prompt
         )
         return response.text
