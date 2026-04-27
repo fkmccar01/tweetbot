@@ -49,7 +49,7 @@ Return only the rewritten text.
 
     try:
         response = client.models.generate_content(
-            model="gemini-1.5-flash-001",  # ✅ stable SDK-supported model
+            model="gemini-2.5-flash",  # ✅ stable SDK-supported model
             contents=prompt
         )
         return response.text
