@@ -35,7 +35,7 @@ STYLE EXAMPLES:
 RULES:
 - Preserve meaning exactly
 - Do NOT add new facts or claims
-- Use short, confident political sentences
+- Use short, confident political sentences, but with a slight casual speaking/conversational tone
 - Avoid generic phrases like "moving forward", "together we can"
 - Do NOT sound like an AI assistant
 - Make it sound like real political messaging
